@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 /**
  * Write a description of class Wizard here.
@@ -8,26 +9,12 @@
 public class Wizard
 {
     // instance variables - replace the example below with your own
-    private int x;
-
-    /**
-     * Constructor for objects of class Wizard
-     */
-    public Wizard()
-    {
-        // initialise instance variables
-        x = 0;
-    }
-
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
+    String name;
+    int health;
+    ArrayList<String> spellBook = new ArrayList<String>();
+    public Wizard(String n, ArrayList<String> spells ){
+        name = n;
+        health = 100;
+        spellBook = spells;
     }
 }

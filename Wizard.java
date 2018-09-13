@@ -1,6 +1,6 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.lang.String;
+import javax.swing.JOptionPane;
 public class Wizard{
     String name;
     int health;
@@ -16,9 +16,8 @@ public class Wizard{
     }
     
     public static void main(String[] arg){
-        System.out.println("Please enter the name of your wizard: ");
-        Scanner in = new Scanner(System.in);
-        String name = in.nextLine();
+        JOptionPane.showInputDialog( "Please enter the name of your wizard: ");
+        String name = JOptionPane.showMessageDialog(null, _message_)
         Wizard wizard = new Wizard(name);
         pickSpells();
     }
@@ -43,7 +42,8 @@ public class Wizard{
             String spell = in.nextLine();
             spell = spell.toLowerCase();
             for(int i = 0; i< allSpells.length; i++){
-                if(spell == allSpells[i].getName()){
+                String nameOfSpell = allSpells[i].getName();
+                if(spell.equals(nameOfSpell)){
                     totalDays = totalDays + allSpells[i].getLearnTime();
                     addSpelltoSpellBook(allSpells[i]);
                 }

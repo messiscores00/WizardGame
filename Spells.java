@@ -1,6 +1,9 @@
+/*
+ * Purpose: handels te creation of the spells
+ */
 public class Spells
 {
-     int learnTime, accuracy, timesCanBeUsed, speed, health, healthPerRound, damage, damagePerRound;
+    int learnTime, accuracy, timesCanBeUsed, speed, health, healthPerRound, damage, damagePerRound;
     String type, name;
 
     public Spells(int lt , int a, int tcbu, int s, int h, int hpr, int d, int dpr, String t , String n){

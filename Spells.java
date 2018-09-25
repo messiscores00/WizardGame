@@ -5,9 +5,9 @@ import javax.swing.JOptionPane;
 public class Spells
 {
     int learnTime, accuracy, timesCanBeUsed, speed, health, healthPerRound, damage, damagePerRound;
-    String type, name;
+    String type, name, level;
 
-    public Spells(int lt , int a, int tcbu, int s, int h, int hpr, int d, int dpr, String t , String n){
+    public Spells(int lt , int a, int tcbu, int s, int h, int hpr, int d, int dpr, String t , String n, String le){
         learnTime = lt;
         accuracy = a;
         timesCanBeUsed = tcbu;
@@ -18,6 +18,7 @@ public class Spells
         damagePerRound = dpr;
         type = t;
         name = n;
+        level = le;//H=hard , M=Medium, E=easy
     }
     public void spellSummary(){
         JOptionPane.showMessageDialog(null,"*********" + "\n" + "Spell name: " + this.name + "\n" +  "  health: " + this.health + "\n" + "  healthPerRound: " + this.healthPerRound + "\n" + "  learnTime: " + this.learnTime + "\n" + "  accuracy: " + this.accuracy +

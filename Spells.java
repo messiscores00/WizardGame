@@ -1,6 +1,11 @@
 import javax.swing.JOptionPane;
 /*
  * Purpose: handels te creation of the spells
+ * Progress: 4/4
+ * 1)all paramiters of a spell
+ * 2)spell Summary
+ * 3)get Learn time
+ * 4)Get name
  */
 public class Spells
 {

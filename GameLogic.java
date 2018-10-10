@@ -91,5 +91,8 @@ public class GameLogic
         System.out.println("");
         
     }
+    public static void playGame(){
+        
+    }
 }
 

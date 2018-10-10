@@ -35,4 +35,22 @@ public class Spells
     public String getName(){
         return this.name;
     }
+    public int getDamage(){
+        return this.damage;
+    }
+    public int getDamagePerRound(){
+        return this.damagePerRound;
+    }
+    public int getHealth(){
+        return this.health;
+    }
+    public int getHealthPerRound(){
+        return this.healthPerRound;
+    }
+    public int getAccuracy(){
+        return this.accuracy;
+    }
+    public int getTimesCanBeUsed(){
+        return this.timesCanBeUsed;
+    }
 }

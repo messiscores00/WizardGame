@@ -47,4 +47,11 @@ public class SpellBook
         }
         return 0;
     }
+    /*public int getDamageFromSpellBook(String spellName){
+        for(int i = 0; i < spellBook.size(); i++){
+            if(spellBook.get(i).getName() == spellName){
+                return spellBook.get(i).;
+            }
+        }
+    }*/
 }

@@ -26,7 +26,7 @@ public class Spells
         level = le;//H=hard , M=Medium, E=easy
     }
     public void spellSummary(){
-        JOptionPane.showMessageDialog(null,"*********" + "\n" + "Spell name: " + this.name + "\n" +  "  health: " + this.health + "\n" + "  healthPerRound: " + this.healthPerRound + "\n" + "  learnTime: " + this.learnTime + "\n" + "  accuracy: " + this.accuracy +
+        System.out.println("*********" + "\n" + "Spell name: " + this.name + "\n" +  "  health: " + this.health + "\n" + "  healthPerRound: " + this.healthPerRound + "\n" + "  learnTime: " + this.learnTime + "\n" + "  accuracy: " + this.accuracy +
         "\n" + "  timesCanBeUsed: " + this.timesCanBeUsed + "\n" + "  speed: " + this.speed + "\n" + "  damage: " + this.damage + "\n" + "  damagePerRound: " + this.damagePerRound + "\n" + "  type: " + this.type);
     } 
     public int getLearnTime(){

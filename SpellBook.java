@@ -31,4 +31,20 @@ public class SpellBook
             spellBook.get(i).spellSummary();
         }
     }   
+    public String getSpellNameFromSpellBook(String spellName){
+        for(int i = 0; i < spellBook.size(); i++){
+            if(spellBook.get(i).getName() == spellName){
+                return spellBook.get(i).getName();
+            }
+        }
+        return "";
+    }
+    public int getSpellLearnTimeFromSpellBook(String spellName){
+        for(int i = 0; i < spellBook.size(); i++){
+            if(spellBook.get(i).getName() == spellName){
+                return spellBook.get(i).getLearnTime();
+            }
+        }
+        return 0;
+    }
 }

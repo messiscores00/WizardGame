@@ -8,12 +8,16 @@ import java.lang.String;
  */
 public class Wizard{
     //Wizard
-    String name;
+    public String name;
     int health;
+    SpellBook spellBook;
     public Wizard(String n){
         name = n;
         health = 100;
-        SpellBook spellBook = new SpellBook();
+        spellBook = new SpellBook();
+    }
+    public SpellBook getSpellBookObject(){
+        return spellBook;
     }
 }
     

@@ -1,9 +1,10 @@
 import javax.swing.JOptionPane;
 import java.util.Random;
 import java.lang.reflect.Array;
+import java.lang.Object;
 /*
  * Purpose: Handle the creation of the user's Wizard and the AiWizard, and the spellBooks for each wizard, and hanles the game logic
- * Progress: 2 /6
+ * Progress: 3/6
  * 1) create wizard
  *     √-Ask the user for name
  *     √-wizard object
@@ -22,6 +23,7 @@ import java.lang.reflect.Array;
 public class GameLogic
 {
     static int daysLeftToLearn = 10;
+    static int daysLeftToLearnForAiWizard = 10;
     static String wizardName;
     static Wizard wizard;
     static Wizard userWizard;
@@ -76,8 +78,17 @@ public class GameLogic
     public static void createAiWizard(){
         userWizard = new Wizard("userWizard");
         Random ran = new Random();
-        int spellNumber = ran.nextInt(AllSpells.allSpells.length) + 1;
-        userWizard.getSpellBookObject().addToSpellBook(Array.get(AllSpells.allSpells ,spellNumber));
+        int spellNumber;
+        String spellName;
+        while(GameLogic.daysLeftToLearnForAiWizard > 0){
+            spellNumber = ran.nextInt(AllSpells.allSpells.length);
+            spellName = Array.get(AllSpells.allSpells , spellNumber).toString();
+            userWizard.getSpellBookObject().addToSpellBook(spellName);
+            daysLeftToLearnForAiWizard -= userWizard.getSpellBookObject().getSpellLearnTimeFromSpellBook(spellName);
+        }
+    }
+    public static void explainRules(){
+        System.out.println("");
         
     }
 }

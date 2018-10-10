@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 /*
  * Purpose: To handel all the spells
  * Progress: 3/3
@@ -29,5 +30,5 @@ public class AllSpells
         for(int i = 0; i<allSpells.length; i++){
            allSpells[i].spellSummary();
         }
-   }
+   }     
 }

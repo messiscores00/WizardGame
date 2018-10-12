@@ -1,11 +1,9 @@
 import javax.swing.JOptionPane;
 /*
  * Purpose: handels te creation of the spells
- * Progress: 4/4
+ * Progress: 2/2
  * 1)all paramiters of a spell
  * 2)spell Summary
- * 3)get Learn time
- * 4)Get name
  */
 public class Spells
 {
@@ -29,28 +27,4 @@ public class Spells
         System.out.println("*********" + "\n" + "Spell name: " + this.name + "\n" +  "  health: " + this.health + "\n" + "  healthPerRound: " + this.healthPerRound + "\n" + "  learnTime: " + this.learnTime + "\n" + "  accuracy: " + this.accuracy +
         "\n" + "  timesCanBeUsed: " + this.timesCanBeUsed + "\n" + "  speed: " + this.speed + "\n" + "  damage: " + this.damage + "\n" + "  damagePerRound: " + this.damagePerRound + "\n" + "  type: " + this.type);
     } 
-    public int getLearnTime(){
-        return this.learnTime;
-    }
-    public String getName(){
-        return this.name;
-    }
-    public int getDamage(){
-        return this.damage;
-    }
-    public int getDamagePerRound(){
-        return this.damagePerRound;
-    }
-    public int getHealth(){
-        return this.health;
-    }
-    public int getHealthPerRound(){
-        return this.healthPerRound;
-    }
-    public int getAccuracy(){
-        return this.accuracy;
-    }
-    public int getTimesCanBeUsed(){
-        return this.timesCanBeUsed;
-    }
 }

@@ -25,7 +25,7 @@ import java.lang.Object;
        √-compare spell types to caculate damage or health
        √-caculate accuracy
        √-apply the faster spell's damage or health
-       -check if health is 0 or below
+       √-check if health is 0 or below
        -remove one from times that can be used
        -report what happened to the user
        -caculate accuracy
@@ -40,14 +40,19 @@ import java.lang.Object;
  */
 public class GameLogic
 {
-    static int daysLeftToLearn = 10;
+    static double daysLeftToLearn = 10;
     static int daysLeftToLearnForAiWizard = 10;
     static String wizardName;
     static Wizard userWizard;
     static Wizard AiWizard;
+    static Wizard fasterWizard;
+    static Wizard slowerWizard;
     public static void main(String[] arg){
         GameLogic.createUserWizard();
         GameLogic.userSpellBookCreatedAndEdited();
+        GameLogic.createAiWizard();
+        GameLogic.explainRules();
+        GameLogic.playGame();
     }
     //1______________________________________
     public static void createUserWizard(){
@@ -83,11 +88,11 @@ public class GameLogic
         int yes_No_AddToSpellBook = JOptionPane.showConfirmDialog(null, "Would you like to add spells to your spell book?");
         if(yes_No_AddToSpellBook == 0){
             while((daysLeftToLearn > 0 && daysLeftToLearn <= 10)|| yes_No_AddToSpellBook == 0){
-                JOptionPane.showMessageDialog(null,"You have " + daysLeftToLearn + "days left to learn your spells" );
+                JOptionPane.showMessageDialog(null,"You have " + daysLeftToLearn + " days left to learn your spells" );
                 AllSpells.printAllSpellSummaries();
                 String spellName = JOptionPane.showInputDialog("What spell would you like to add to your spell book " + userWizard.name + "?");
                 userWizard.getSpellBookObject().addToSpellBook(spellName);
-                daysLeftToLearn -= userWizard.getSpellBookObject().getSpellLearnTimeFromSpellBook(spellName);
+                daysLeftToLearn = daysLeftToLearn - userWizard.getSpellBookObject().getSpellLearnTimeFromSpellBook(spellName);
                 yes_No_AddToSpellBook = JOptionPane.showConfirmDialog(null, "Do you want to add more spells?");
             }
             if(yes_No_AddToSpellBook != 0){
@@ -97,7 +102,7 @@ public class GameLogic
     }
     //3___________________________________
     public static void createAiWizard(){
-        AiWizard = new Wizard("AiWizard");
+        AiWizard = new Wizard("Your opponent");
         Random ran = new Random();
         int spellNumber;
         String spellName;
@@ -115,39 +120,98 @@ public class GameLogic
     }
     //5________________________________________
     public static void playGame(){
-        GameLogic.playerPicksSpell();
-        GameLogic.aiPicksSpell();
+        Spells userSpell;
+        Spells aiSpell;
+        Spells fasterSpell;
+        Spells slowerSpell;
+        double fasterSpellsDamage;
+        double slowerSpellsDamage;
+        boolean fasterSpellsAccuracy;
+        boolean slowerSpellsAccuracy;
+        while(userWizard.health > 0 && AiWizard.health > 0){
+            userSpell = GameLogic.playerPicksSpell();
+            aiSpell = GameLogic.aiPicksSpell();
+            fasterSpell = GameLogic.compareSpellsSpeed(userWizard, userSpell, AiWizard, aiSpell);
+            slowerSpell = GameLogic.compareSlowerSpellsSpeed(userSpell, aiSpell);
+            fasterSpellsDamage = GameLogic.caculateDamage(fasterSpell, slowerSpell);
+            slowerSpellsDamage = GameLogic.caculateDamage(slowerSpell, fasterSpell);
+            fasterSpellsAccuracy = GameLogic.caculateAccuracy(fasterSpell);
+            slowerSpellsAccuracy = GameLogic.caculateAccuracy(slowerSpell);
+            if(fasterSpellsAccuracy == true){
+                GameLogic.applyDamage(slowerWizard, fasterSpellsDamage);
+                JOptionPane.showMessageDialog(null, slowerWizard.name + " has taken " + String.valueOf(fasterSpellsDamage) + " damage");
+            }else{
+                JOptionPane.showMessageDialog(null,fasterWizard.name + "'s spell has missed.");
+            }
+            if(slowerSpellsAccuracy == true){
+                GameLogic.applyDamage(fasterWizard, slowerSpellsDamage);
+                JOptionPane.showMessageDialog(null, fasterWizard.name + " has taken " + String.valueOf(slowerSpellsDamage) + " damage");
+            }else{
+                JOptionPane.showMessageDialog(null,slowerWizard.name + "'s spell has missed.");
+            }
+        }
+        Wizard winnerWizard;
+        if(userWizard.health <= 0){
+            winnerWizard = userWizard;
+        }else{
+            winnerWizard = AiWizard;
+        }
+        GameLogic.endGame(winnerWizard);
     }
+    
     public static Spells playerPicksSpell(){
         userWizard.getSpellBookObject().spellBookSummary();
         String spellName = JOptionPane.showInputDialog("What Spell are you going to attack with?");
-        userWizard.getSpellBookObject().getSpellNameFromSpellBook(spellName);
-        return 
+        return userWizard.getSpellBookObject().getSpellFromSpellBook(spellName);
     }
     public static Spells aiPicksSpell(){
         Random ran = new Random();
         int spellRandomNumber = ran.nextInt(AiWizard.getSpellBookObject().spellBook.size());
-        return AiWizard.getSpellBookObject().;
+        return AiWizard.getSpellBookObject().spellBook.get(spellRandomNumber);
     }
-    public static Spells compareSpellsSpeed (Spells spell1 , Spells spell2){
+    public static Spells compareSpellsSpeed (Wizard spell1Wizard, Spells spell1 , Wizard spell2Wizard, Spells spell2){
         if(spell1.speed > spell2.speed){
             JOptionPane.showMessageDialog(null,"Your spell goes first.");
+            fasterWizard = spell1Wizard;
+            slowerWizard = spell2Wizard;
             return spell1;   
         }else if(spell1.speed < spell2.speed){
             JOptionPane.showMessageDialog(null,"Your opponent's spell goes first.");
+            fasterWizard = spell2Wizard;
+            slowerWizard = spell1Wizard;
             return spell2;
         }else if(spell1.speed == spell2.speed){
             Random ran = new Random();
             int randomNum = ran.nextInt(10) + 1;
             if(randomNum <= 5){
                 JOptionPane.showMessageDialog(null,"Your spell goes first.");
+                fasterWizard = spell1Wizard;
+                slowerWizard = spell2Wizard;
                 return spell1;
             }else{
                 JOptionPane.showMessageDialog(null,"Your opponent's spell goes first.");
+                fasterWizard = spell2Wizard;
+                slowerWizard = spell1Wizard;
                 return spell2;
             }
         }
         return spell1;
+    }
+    public static Spells compareSlowerSpellsSpeed(Spells spell1, Spells spell2){
+        if(spell1.speed > spell2.speed){
+            return spell2;   
+        }else if(spell1.speed < spell2.speed){
+            return spell1;
+        }else if(spell1.speed == spell2.speed){
+            Random ran = new Random();
+            int randomNum = ran.nextInt(10) + 1;
+            if(randomNum <= 5){
+                return spell2;
+            }else{
+                return spell1;
+            }
+        }
+        return spell2;
     }
     public static double caculateDamage(Spells spell1, Spells spell2){
         // "Water" "Fire" "Grass" "Normal"
@@ -183,9 +247,13 @@ public class GameLogic
             return false;
         }
     }
-    public static void applyDamage(Wizard wizardName , int damage){
-        int newHealth = wizardName.health - damage;
+    public static void applyDamage(Wizard wizardName , double damage){
+        double newHealth = wizardName.health - damage;
         wizardName.setHealth(newHealth);
+    }
+    //6_______________________________________
+    public static void endGame(Wizard winnerWizard){
+        JOptionPane.showMessageDialog(null,winnerWizard.name + " has won the game!");
     }
 }
 

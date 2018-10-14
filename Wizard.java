@@ -1,4 +1,3 @@
-
 import java.lang.String;
 /*
  * Purpose: create the wizard
@@ -9,7 +8,7 @@ import java.lang.String;
 public class Wizard{
     //Wizard
     public String name;
-    int health;
+    double health;
     SpellBook spellBook;
     public Wizard(String n){
         name = n;
@@ -19,7 +18,7 @@ public class Wizard{
     public SpellBook getSpellBookObject(){
         return spellBook;
     }
-    public void setHealth(int newHealth){
+    public void setHealth(double newHealth){
         health = newHealth;
     }
 }

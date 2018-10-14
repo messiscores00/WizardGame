@@ -13,7 +13,9 @@ public class SpellBook
         spellBook = new ArrayList<Spells>();
     }    
     public void addToSpellBook(String spellName){
-        for(int i = 0; i<AllSpells.allSpells.length; i++){
+        String test;
+        for(int i = 0; i<=AllSpells.allSpells.length; i++){
+            test =  AllSpells.allSpells[i].name;
             if(spellName == AllSpells.allSpells[i].name){
                 spellBook.add(AllSpells.allSpells[i]);
             }

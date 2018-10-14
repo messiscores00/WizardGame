@@ -27,4 +27,7 @@ public class Spells
         System.out.println("*********" + "\n" + "Spell name: " + this.name + "\n" +  "  health: " + this.health + "\n" + "  healthPerRound: " + this.healthPerRound + "\n" + "  learnTime: " + this.learnTime + "\n" + "  accuracy: " + this.accuracy +
         "\n" + "  timesCanBeUsed: " + this.timesCanBeUsed + "\n" + "  speed: " + this.speed + "\n" + "  damage: " + this.damage + "\n" + "  damagePerRound: " + this.damagePerRound + "\n" + "  type: " + this.type);
     } 
+    public String getName(){
+       return this.name; 
+    }
 }

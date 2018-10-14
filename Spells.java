@@ -7,10 +7,10 @@ import javax.swing.JOptionPane;
  */
 public class Spells
 {
-    int learnTime, accuracy, timesCanBeUsed, speed, health, healthPerRound, damage, damagePerRound;
+    double learnTime, accuracy, timesCanBeUsed, speed, health, healthPerRound, damage, damagePerRound;
     String type, name, level;
 
-    public Spells(int lt , int a, int tcbu, int s, int h, int hpr, int d, int dpr, String t , String n, String le){
+    public Spells(double lt , double a, double tcbu, double s, double h, double hpr, double d, double dpr, String t , String n, String le){
         learnTime = lt;
         accuracy = a;
         timesCanBeUsed = tcbu;

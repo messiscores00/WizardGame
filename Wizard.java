@@ -19,5 +19,8 @@ public class Wizard{
     public SpellBook getSpellBookObject(){
         return spellBook;
     }
+    public void setHealth(int newHealth){
+        health = newHealth;
+    }
 }
     

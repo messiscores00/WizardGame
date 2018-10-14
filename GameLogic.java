@@ -18,13 +18,13 @@ import java.lang.Object;
  * 3) create AiWizard
  * 4) Explain rules
  * 5) Play
- *     -player picks there spell
- *     -Ai picks its spell
- *     -comepare speed
-       -tell user who's spell goes first
-       -compare spell types to caculate damage or health
-       -caculate accuracy
-       -apply the faster spell's damage or health
+ *     √-player picks there spell
+ *     √-Ai picks its spell
+ *     √-comepare speed
+       √-tell user who's spell goes first
+       √-compare spell types to caculate damage or health
+       √-caculate accuracy
+       √-apply the faster spell's damage or health
        -check if health is 0 or below
        -remove one from times that can be used
        -report what happened to the user
@@ -116,13 +116,80 @@ public class GameLogic
     //5________________________________________
     public static void playGame(){
         GameLogic.playerPicksSpell();
+        GameLogic.aiPicksSpell();
     }
-    public static void playerPicksSpell(){
+    public static Spells playerPicksSpell(){
         userWizard.getSpellBookObject().spellBookSummary();
         String spellName = JOptionPane.showInputDialog("What Spell are you going to attack with?");
+        userWizard.getSpellBookObject().getSpellNameFromSpellBook(spellName);
+        return 
     }
-    public static void aiPicksSpell(){
-        
+    public static Spells aiPicksSpell(){
+        Random ran = new Random();
+        int spellRandomNumber = ran.nextInt(AiWizard.getSpellBookObject().spellBook.size());
+        return AiWizard.getSpellBookObject().;
+    }
+    public static Spells compareSpellsSpeed (Spells spell1 , Spells spell2){
+        if(spell1.speed > spell2.speed){
+            JOptionPane.showMessageDialog(null,"Your spell goes first.");
+            return spell1;   
+        }else if(spell1.speed < spell2.speed){
+            JOptionPane.showMessageDialog(null,"Your opponent's spell goes first.");
+            return spell2;
+        }else if(spell1.speed == spell2.speed){
+            Random ran = new Random();
+            int randomNum = ran.nextInt(10) + 1;
+            if(randomNum <= 5){
+                JOptionPane.showMessageDialog(null,"Your spell goes first.");
+                return spell1;
+            }else{
+                JOptionPane.showMessageDialog(null,"Your opponent's spell goes first.");
+                return spell2;
+            }
+        }
+        return spell1;
+    }
+    public static double caculateDamage(Spells spell1, Spells spell2){
+        // "Water" "Fire" "Grass" "Normal"
+        if(spell1.type == "Water" && (spell2.type == "Normal" || spell2.type == "Water")){
+            return spell1.damage;
+        }else if(spell1.type == "Water" && spell2.type == "Fire"){
+            return spell1.damage * 1.125;
+        }else if(spell1.type == "Water" && spell2.type == "Grass"){
+            return spell1.damage * 0.875;
+        }else if(spell1.type == "Fire" && (spell2.type == "Normal" || spell2.type == "Fire")){
+            return spell1.damage;
+        }else if(spell1.type == "Fire" && spell2.type == "Water"){
+            return spell1.damage * 0.875;
+        }else if(spell1.type == "Fire" && spell2.type == "Grass"){
+            return spell1.damage * 1.125;
+        }else if(spell1.type == "Grass" && (spell2.type == "Normal" || spell2.type == "Grass")){
+            return spell1.damage;
+        }else if(spell1.type == "Grass" && spell2.type == "Water"){
+            return spell1.damage * 1.125;
+        }else if(spell1.type == "Grass" && spell2.type == "Fire"){
+            return spell1.damage * 0.875;
+        }else if(spell1.type == "Normal"){
+            return spell1.damage;
+        }
+        return 0.0;
+    }
+    public static boolean caculateAccuracy(Spells spellName){
+        Random ran = new Random();
+        int randomNum = ran.nextInt(100) + 1;
+        if(randomNum <= spellName.accuracy){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public static void applyDamage(Wizard wizardName , int damage){
+        int newHealth = wizardName.health - damage;
+        wizardName.setHealth(newHealth);
     }
 }
+
+
+
+
 

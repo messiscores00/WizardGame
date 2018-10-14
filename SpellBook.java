@@ -31,15 +31,15 @@ public class SpellBook
             spellBook.get(i).spellSummary();
         }
     }   
-    public String getSpellNameFromSpellBook(String spellName){
+    public Spells getSpellFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
             if(spellBook.get(i).name == spellName){
-                return spellBook.get(i).name;
+                return spellBook.get(i);
             }
         }
-        return "";
+        return spellBook.get(0);
     }
-    public int getSpellLearnTimeFromSpellBook(String spellName){
+    public double getSpellLearnTimeFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
             if(spellBook.get(i).name == spellName){
                 return spellBook.get(i).learnTime;
@@ -47,7 +47,7 @@ public class SpellBook
         }
         return 0;
     }
-    public int getDamageFromSpellBook(String spellName){
+    public double getDamageFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
             if(spellBook.get(i).name == spellName){
                 return spellBook.get(i).damage;
@@ -55,7 +55,7 @@ public class SpellBook
         }
         return 0;
     }
-    public int getHealthFromSpellBook(String spellName){
+    public double getHealthFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
             if(spellBook.get(i).name == spellName){
                 return spellBook.get(i).health;
@@ -63,7 +63,7 @@ public class SpellBook
         }
         return 0;
     }
-    public int getDamagePerRoundFromSpellBook(String spellName){
+    public double getDamagePerRoundFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
             if(spellBook.get(i).name == spellName){
                 return spellBook.get(i).damagePerRound;
@@ -71,7 +71,7 @@ public class SpellBook
         }
         return 0;
     }
-    public int getHealthPerRoundFromSpellBook(String spellName){
+    public double getHealthPerRoundFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
             if(spellBook.get(i).name == spellName){
                 return spellBook.get(i).healthPerRound;
@@ -79,34 +79,34 @@ public class SpellBook
         }
         return 0;
     }
-    public int getAccuracyFromSpellBook(String spellName){
+    public double getAccuracyFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
             if(spellBook.get(i).name == spellName){
-                return spellBook.get(i).getAccuracy();
+                return spellBook.get(i).accuracy;
             }
         }
         return 0;
     }
-    public int getTimesCanBeUsedFromSpellBook(String spellName){
+    public double getTimesCanBeUsedFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
-            if(spellBook.get(i).getName() == spellName){
-                return spellBook.get(i).getTimesCanBeUsed();
+            if(spellBook.get(i).name == spellName){
+                return spellBook.get(i).timesCanBeUsed;
             }
         }
         return 0;
     }
-    public int getSpeedFromSpellBook(String spellName){
+    public double getSpeedFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
-            if(spellBook.get(i).getName() == spellName){
-                return spellBook.get(i).getSpeed();
+            if(spellBook.get(i).name == spellName){
+                return spellBook.get(i).speed;
             }
         }
         return 0;
     }
     public String getTypeFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
-            if(spellBook.get(i).getName() == spellName){
-                return spellBook.get(i).getType();
+            if(spellBook.get(i).name == spellName){
+                return spellBook.get(i).type;
             }
         }
         return "";

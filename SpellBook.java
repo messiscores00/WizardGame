@@ -13,29 +13,29 @@ public class SpellBook
         spellBook = new ArrayList<Spells>();
     }    
     public void addToSpellBook(String spellName){
-        String test;
-        for(int i = 0; i<=AllSpells.allSpells.length; i++){
-            test =  AllSpells.allSpells[i].name;
-            if(spellName == AllSpells.allSpells[i].name){
+        for(int i = 0; i<AllSpells.allSpells.length; i++){            
+            if(AllSpells.allSpells[i].name.equalsIgnoreCase(spellName)){
                 spellBook.add(AllSpells.allSpells[i]);
             }
         }
     }
     public void removeFromSpellBook(String spellName){
         for(int i = 0; i<spellBook.size(); i++){
-            if(spellName == spellBook.get(i).name){
+            if(spellBook.get(i).name.equalsIgnoreCase(spellName)){
                 spellBook.remove(i);
             }
         }
     }
     public void spellBookSummary(){
+        System.out.println("Start: *****************************************Spell Book*****************************************");
         for(int i = 0; i < spellBook.size(); i++){
             spellBook.get(i).spellSummary();
         }
+        System.out.println("End: *****************************************Spell Book*****************************************");
     }   
     public Spells getSpellFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
-            if(spellBook.get(i).name == spellName){
+            if(spellBook.get(i).name.equalsIgnoreCase(spellName)){
                 return spellBook.get(i);
             }
         }
@@ -43,7 +43,7 @@ public class SpellBook
     }
     public double getSpellLearnTimeFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
-            if(spellBook.get(i).name == spellName){
+            if(spellBook.get(i).name.equalsIgnoreCase(spellName)){
                 return spellBook.get(i).learnTime;
             }
         }
@@ -51,7 +51,7 @@ public class SpellBook
     }
     public double getDamageFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
-            if(spellBook.get(i).name == spellName){
+            if(spellBook.get(i).name.equalsIgnoreCase(spellName)){
                 return spellBook.get(i).damage;
             }
         }
@@ -59,7 +59,7 @@ public class SpellBook
     }
     public double getHealthFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
-            if(spellBook.get(i).name == spellName){
+            if(spellBook.get(i).name.equalsIgnoreCase(spellName)){
                 return spellBook.get(i).health;
             }
         }
@@ -67,7 +67,7 @@ public class SpellBook
     }
     public double getDamagePerRoundFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
-            if(spellBook.get(i).name == spellName){
+            if(spellBook.get(i).name.equalsIgnoreCase(spellName)){
                 return spellBook.get(i).damagePerRound;
             }
         }
@@ -75,7 +75,7 @@ public class SpellBook
     }
     public double getHealthPerRoundFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
-            if(spellBook.get(i).name == spellName){
+            if(spellBook.get(i).name.equalsIgnoreCase(spellName)){
                 return spellBook.get(i).healthPerRound;
             }
         }
@@ -83,7 +83,7 @@ public class SpellBook
     }
     public double getAccuracyFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
-            if(spellBook.get(i).name == spellName){
+            if(spellBook.get(i).name.equalsIgnoreCase(spellName)){
                 return spellBook.get(i).accuracy;
             }
         }
@@ -91,7 +91,7 @@ public class SpellBook
     }
     public double getTimesCanBeUsedFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
-            if(spellBook.get(i).name == spellName){
+            if(spellBook.get(i).name.equalsIgnoreCase(spellName)){
                 return spellBook.get(i).timesCanBeUsed;
             }
         }
@@ -99,7 +99,7 @@ public class SpellBook
     }
     public double getSpeedFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
-            if(spellBook.get(i).name == spellName){
+            if(spellBook.get(i).name.equalsIgnoreCase(spellName)){
                 return spellBook.get(i).speed;
             }
         }
@@ -107,10 +107,17 @@ public class SpellBook
     }
     public String getTypeFromSpellBook(String spellName){
         for(int i = 0; i < spellBook.size(); i++){
-            if(spellBook.get(i).name == spellName){
+            if(spellBook.get(i).name.equalsIgnoreCase(spellName)){
                 return spellBook.get(i).type;
             }
         }
         return "";
+    }
+    public void setTimesCanBeUsed(String spellName){
+        for(int i = 0; i < spellBook.size(); i++){
+            if(spellBook.get(i).name.equalsIgnoreCase(spellName)){
+                spellBook.get(i).timesCanBeUsed = spellBook.get(i).timesCanBeUsed - 1;
+            }
+        }
     }
 }

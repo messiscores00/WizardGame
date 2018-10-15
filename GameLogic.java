@@ -37,11 +37,12 @@ import java.lang.Object;
        -check if health is 0 or below
        -report what happened to the user
  * 6) Win or Die screen
+ * -implement damage per round and health per round
  */
 public class GameLogic
 {
     static double daysLeftToLearn = 10;
-    static int daysLeftToLearnForAiWizard = 10;
+    static double daysLeftToLearnForAiWizard = 10;
     static String wizardName;
     static Wizard userWizard;
     static Wizard AiWizard;
@@ -71,15 +72,17 @@ public class GameLogic
     public static void removeToSpellBookHandeling(){
         int yes_No_RemoveToSpellBook = JOptionPane.showConfirmDialog(null, "Would you like to remove spells to your spell book?");
         if(yes_No_RemoveToSpellBook == 0){
-            while((daysLeftToLearn > 0 && daysLeftToLearn <= 10) || yes_No_RemoveToSpellBook == 0){
-                JOptionPane.showMessageDialog(null,"You have " + daysLeftToLearn + "days left to learn your spells" );
-                userWizard.getSpellBookObject().spellBookSummary();
+            userWizard.getSpellBookObject().spellBookSummary();
+            while(daysLeftToLearn <= 10 && yes_No_RemoveToSpellBook == 0){
+                JOptionPane.showMessageDialog(null,"You have " + daysLeftToLearn + " days left to learn your spells" );
                 String spellName = JOptionPane.showInputDialog("What spell would you like to remove from your spell book " + userWizard.name + "?");
+                daysLeftToLearn = daysLeftToLearn + userWizard.getSpellBookObject().getSpellLearnTimeFromSpellBook(spellName);
                 userWizard.getSpellBookObject().removeFromSpellBook(spellName);
-                daysLeftToLearn += userWizard.getSpellBookObject().getSpellLearnTimeFromSpellBook(spellName);
+                userWizard.getSpellBookObject().spellBookSummary();
+                JOptionPane.showMessageDialog(null,"You have " + daysLeftToLearn + " days left to learn your spells" );
                 yes_No_RemoveToSpellBook = JOptionPane.showConfirmDialog(null, "Do you want to remove more spells?");
             }
-            if(yes_No_RemoveToSpellBook != 0){
+            if(yes_No_RemoveToSpellBook == 0){
                 JOptionPane.showMessageDialog(null,"You have reached your max days to learn spells.");
             }
         }
@@ -87,15 +90,15 @@ public class GameLogic
     public static void addToSpellBookHandeling(){
         int yes_No_AddToSpellBook = JOptionPane.showConfirmDialog(null, "Would you like to add spells to your spell book?");
         if(yes_No_AddToSpellBook == 0){
-            while((daysLeftToLearn > 0 && daysLeftToLearn <= 10)|| yes_No_AddToSpellBook == 0){
+            AllSpells.printAllSpellSummaries();
+            while(daysLeftToLearn > 0 && yes_No_AddToSpellBook == 0){
                 JOptionPane.showMessageDialog(null,"You have " + daysLeftToLearn + " days left to learn your spells" );
-                AllSpells.printAllSpellSummaries();
                 String spellName = JOptionPane.showInputDialog("What spell would you like to add to your spell book " + userWizard.name + "?");
                 userWizard.getSpellBookObject().addToSpellBook(spellName);
                 daysLeftToLearn = daysLeftToLearn - userWizard.getSpellBookObject().getSpellLearnTimeFromSpellBook(spellName);
                 yes_No_AddToSpellBook = JOptionPane.showConfirmDialog(null, "Do you want to add more spells?");
             }
-            if(yes_No_AddToSpellBook != 0){
+            if(yes_No_AddToSpellBook == 0){
                 JOptionPane.showMessageDialog(null,"You have ran out of days to learn spells.");
             }
         }
@@ -108,15 +111,18 @@ public class GameLogic
         String spellName;
         while(GameLogic.daysLeftToLearnForAiWizard > 0){
             spellNumber = ran.nextInt(AllSpells.allSpells.length);
-            spellName = Array.get(AllSpells.allSpells , spellNumber).toString();
+            spellName = AllSpells.allSpells[spellNumber].name;
             AiWizard.getSpellBookObject().addToSpellBook(spellName);
-            daysLeftToLearnForAiWizard -= AiWizard.getSpellBookObject().getSpellLearnTimeFromSpellBook(spellName);
+            daysLeftToLearnForAiWizard = daysLeftToLearnForAiWizard - AiWizard.getSpellBookObject().getSpellLearnTimeFromSpellBook(spellName);
         }
     }
     //4________________________________________
     public static void explainRules(){
-        System.out.println("");
-        
+        JOptionPane.showMessageDialog(null,"*****RULES OF THE GAME*****" + "\n" + 
+        "1) You will pick a spell from your spell book and you opponet will pick a spell from their spell book." + "\n" + 
+        "2) The faster spell will hit first then the slower spell will hit." + "\n" +
+        "3) The first wizard to get below or equal to 0 health looses." + "\n" +
+        "Pick your spells wisely because you can only use your spells a certain number of times.");
     }
     //5________________________________________
     public static void playGame(){
@@ -128,6 +134,10 @@ public class GameLogic
         double slowerSpellsDamage;
         boolean fasterSpellsAccuracy;
         boolean slowerSpellsAccuracy;
+        double damagePerRoundOnFaster = 0;
+        double damagePerRoundOnSlower = 0;
+        double healthPerRoundOnFaster = 0;
+        double healthPerRoundOnSlower = 0;
         while(userWizard.health > 0 && AiWizard.health > 0){
             userSpell = GameLogic.playerPicksSpell();
             aiSpell = GameLogic.aiPicksSpell();
@@ -139,19 +149,51 @@ public class GameLogic
             slowerSpellsAccuracy = GameLogic.caculateAccuracy(slowerSpell);
             if(fasterSpellsAccuracy == true){
                 GameLogic.applyDamage(slowerWizard, fasterSpellsDamage);
-                JOptionPane.showMessageDialog(null, slowerWizard.name + " has taken " + String.valueOf(fasterSpellsDamage) + " damage");
+                GameLogic.applyHealth(fasterWizard, fasterSpell.health);
+                damagePerRoundOnSlower = damagePerRoundOnSlower + fasterSpell.damagePerRound;
+                healthPerRoundOnFaster = healthPerRoundOnFaster + fasterSpell.healthPerRound;
+                fasterWizard.getSpellBookObject().setTimesCanBeUsed(fasterSpell.getName());
+                JOptionPane.showMessageDialog(null, slowerWizard.name + " has taken " + String.valueOf(fasterSpellsDamage) + " damage" + "\n" +
+                userWizard.name + "'s health is: " + userWizard.health + "\n" +
+                AiWizard.name + "'s health is: " + AiWizard.health);
             }else{
                 JOptionPane.showMessageDialog(null,fasterWizard.name + "'s spell has missed.");
+                fasterWizard.getSpellBookObject().setTimesCanBeUsed(fasterSpell.getName());
             }
             if(slowerSpellsAccuracy == true){
                 GameLogic.applyDamage(fasterWizard, slowerSpellsDamage);
-                JOptionPane.showMessageDialog(null, fasterWizard.name + " has taken " + String.valueOf(slowerSpellsDamage) + " damage");
+                GameLogic.applyHealth(slowerWizard, slowerSpell.health);
+                damagePerRoundOnFaster = damagePerRoundOnFaster + slowerSpell.damagePerRound;
+                healthPerRoundOnSlower = healthPerRoundOnSlower + slowerSpell.healthPerRound;
+                slowerWizard.getSpellBookObject().setTimesCanBeUsed(slowerSpell.getName());
+                JOptionPane.showMessageDialog(null, fasterWizard.name + " has taken " + String.valueOf(slowerSpellsDamage) + " damage" + "\n" +
+                userWizard.name + "'s health is: " + userWizard.health + "\n" +
+                AiWizard.name + "'s health is: " + AiWizard.health);
             }else{
                 JOptionPane.showMessageDialog(null,slowerWizard.name + "'s spell has missed.");
+                slowerWizard.getSpellBookObject().setTimesCanBeUsed(slowerSpell.getName());
             }
+            if(damagePerRoundOnFaster > 0){
+                JOptionPane.showMessageDialog(null, fasterWizard.name + " is injured for " + damagePerRoundOnFaster + " damage per round.");
+            }
+            if(damagePerRoundOnSlower > 0){
+                JOptionPane.showMessageDialog(null, slowerWizard.name + " is injured for " + damagePerRoundOnSlower + " damage per round.");
+            }
+            if(healthPerRoundOnFaster > 0){
+                JOptionPane.showMessageDialog(null, fasterWizard.name + " is healing for " + healthPerRoundOnFaster + " health per round.");
+            }
+            if(healthPerRoundOnSlower > 0){
+                JOptionPane.showMessageDialog(null, slowerWizard.name + " is healing for " + healthPerRoundOnSlower + " health per round.");
+            }
+            GameLogic.applyDamage(fasterWizard, damagePerRoundOnFaster);
+            GameLogic.applyDamage(slowerWizard, damagePerRoundOnSlower);
+            GameLogic.applyHealth(fasterWizard, healthPerRoundOnFaster);
+            GameLogic.applyHealth(slowerWizard, healthPerRoundOnSlower);
+            JOptionPane.showMessageDialog(null, userWizard.name + "'s health is: " + userWizard.health + "\n" +
+            AiWizard.name + "'s health is: " + AiWizard.health);
         }
         Wizard winnerWizard;
-        if(userWizard.health <= 0){
+        if(userWizard.health >= 0){
             winnerWizard = userWizard;
         }else{
             winnerWizard = AiWizard;
@@ -162,7 +204,11 @@ public class GameLogic
     public static Spells playerPicksSpell(){
         userWizard.getSpellBookObject().spellBookSummary();
         String spellName = JOptionPane.showInputDialog("What Spell are you going to attack with?");
-        return userWizard.getSpellBookObject().getSpellFromSpellBook(spellName);
+        if(userWizard.getSpellBookObject().getSpellFromSpellBook(spellName).timesCanBeUsed <= 0 ){
+            return AllSpells.ifNoMoreSpells;
+        }else{
+            return userWizard.getSpellBookObject().getSpellFromSpellBook(spellName);
+        }
     }
     public static Spells aiPicksSpell(){
         Random ran = new Random();
@@ -249,6 +295,10 @@ public class GameLogic
     }
     public static void applyDamage(Wizard wizardName , double damage){
         double newHealth = wizardName.health - damage;
+        wizardName.setHealth(newHealth);
+    }
+    public static void applyHealth(Wizard wizardName, double health){
+        double newHealth = wizardName.health + health;
         wizardName.setHealth(newHealth);
     }
     //6_______________________________________

@@ -24,6 +24,7 @@ public class AllSpells
    static Spells zachibadwa = new Spells(1, 100, 20, 10, 0, 0, 1, 10, "Normal" , "zachibadwa", "easy");
    static Spells deede = new Spells(4, 75, 10, 5, 0, 0, 10, 0, "Normal", "deede", "medium");
    static Spells normali = new Spells(5, 50, 10, 3, 0, 0, 20, 10, "Normal", "normali" , "hard");
+   static Spells ifNoMoreSpells = new Spells(0, 100, 10000, 1, 0, 0, 2, 0, "Normal", "ifNoMoreSpells" , "easy");
    static Spells[] allSpells = {dej, voda, brand, apoy, feier, herba, grama, utshani, zachibadwa, deede, normali};
    
    public static void printAllSpellSummaries(){

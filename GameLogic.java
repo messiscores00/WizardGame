@@ -4,7 +4,7 @@ import java.lang.reflect.Array;
 import java.lang.Object;
 /*
  * Purpose: Handle the creation of the user's Wizard and the AiWizard, and the spellBooks for each wizard, and hanles the game logic
- * Progress: 3/6
+ * Progress: 6/6
  * 1) create wizard
  *     √-Ask the user for name
  *     √-wizard object
@@ -26,18 +26,18 @@ import java.lang.Object;
        √-caculate accuracy
        √-apply the faster spell's damage or health
        √-check if health is 0 or below
-       -remove one from times that can be used
-       -report what happened to the user
-       -caculate accuracy
-       -apply the slower spell's damage or health
-       -check if health is 0 or below
-       -remove one from times that can be used
-       -report what happened to the user
-       -apply damage or health over time
-       -check if health is 0 or below
-       -report what happened to the user
+       √-remove one from times that can be used
+       √-report what happened to the user
+       √-caculate accuracy
+       √-apply the slower spell's damage or health
+       √-check if health is 0 or below
+       √-remove one from times that can be used
+       √-report what happened to the user
+       √-apply damage or health over time
+       √-check if health is 0 or below
+       √-report what happened to the user
  * 6) Win or Die screen
- * -implement damage per round and health per round
+ * √-implement damage per round and health per round
  */
 public class GameLogic
 {
@@ -62,23 +62,24 @@ public class GameLogic
     }
     //2______________________________________
     public static void userSpellBookCreatedAndEdited(){
-        int yes_No_EditToSpellBook = 0;
+        int yes_No_EditToSpellBook = 0; //used for user input
         while(yes_No_EditToSpellBook == 0){
-            GameLogic.addToSpellBookHandeling();
-            GameLogic.removeToSpellBookHandeling();
+            GameLogic.addToSpellBookHandeling();//runs add spells
+            GameLogic.removeToSpellBookHandeling();//runs remove spells
             yes_No_EditToSpellBook = JOptionPane.showConfirmDialog(null, "Would you like to edit your spell book?");
         }
     }
     public static void removeToSpellBookHandeling(){
-        int yes_No_RemoveToSpellBook = JOptionPane.showConfirmDialog(null, "Would you like to remove spells to your spell book?");
+        int yes_No_RemoveToSpellBook = JOptionPane.showConfirmDialog(null, "Would you like to remove spells to your spell book?");//asks the user if they want to remove any spells
         if(yes_No_RemoveToSpellBook == 0){
-            userWizard.getSpellBookObject().spellBookSummary();
+            userWizard.getSpellBookObject().spellBookSummary();//prints their spellbook
             while(daysLeftToLearn <= 10 && yes_No_RemoveToSpellBook == 0){
                 JOptionPane.showMessageDialog(null,"You have " + daysLeftToLearn + " days left to learn your spells" );
                 String spellName = JOptionPane.showInputDialog("What spell would you like to remove from your spell book " + userWizard.name + "?");
-                daysLeftToLearn = daysLeftToLearn + userWizard.getSpellBookObject().getSpellLearnTimeFromSpellBook(spellName);
-                userWizard.getSpellBookObject().removeFromSpellBook(spellName);
-                userWizard.getSpellBookObject().spellBookSummary();
+                daysLeftToLearn = daysLeftToLearn + userWizard.getSpellBookObject().getSpellLearnTimeFromSpellBook(spellName);//needs to be before the remove because this is using the spell 
+                //that is in the spell book and it can't use it if it is not in the spell book
+                userWizard.getSpellBookObject().removeFromSpellBook(spellName);//removes spell
+                userWizard.getSpellBookObject().spellBookSummary();//shows the new spell book
                 JOptionPane.showMessageDialog(null,"You have " + daysLeftToLearn + " days left to learn your spells" );
                 yes_No_RemoveToSpellBook = JOptionPane.showConfirmDialog(null, "Do you want to remove more spells?");
             }
@@ -90,12 +91,12 @@ public class GameLogic
     public static void addToSpellBookHandeling(){
         int yes_No_AddToSpellBook = JOptionPane.showConfirmDialog(null, "Would you like to add spells to your spell book?");
         if(yes_No_AddToSpellBook == 0){
-            AllSpells.printAllSpellSummaries();
+            AllSpells.printAllSpellSummaries();//prints all the spells
             while(daysLeftToLearn > 0 && yes_No_AddToSpellBook == 0){
                 JOptionPane.showMessageDialog(null,"You have " + daysLeftToLearn + " days left to learn your spells" );
                 String spellName = JOptionPane.showInputDialog("What spell would you like to add to your spell book " + userWizard.name + "?");
                 userWizard.getSpellBookObject().addToSpellBook(spellName);
-                daysLeftToLearn = daysLeftToLearn - userWizard.getSpellBookObject().getSpellLearnTimeFromSpellBook(spellName);
+                daysLeftToLearn = daysLeftToLearn - userWizard.getSpellBookObject().getSpellLearnTimeFromSpellBook(spellName);//subtracks the days to learn
                 yes_No_AddToSpellBook = JOptionPane.showConfirmDialog(null, "Do you want to add more spells?");
             }
             if(yes_No_AddToSpellBook == 0){
@@ -110,10 +111,10 @@ public class GameLogic
         int spellNumber;
         String spellName;
         while(GameLogic.daysLeftToLearnForAiWizard > 0){
-            spellNumber = ran.nextInt(AllSpells.allSpells.length);
-            spellName = AllSpells.allSpells[spellNumber].name;
-            AiWizard.getSpellBookObject().addToSpellBook(spellName);
-            daysLeftToLearnForAiWizard = daysLeftToLearnForAiWizard - AiWizard.getSpellBookObject().getSpellLearnTimeFromSpellBook(spellName);
+            spellNumber = ran.nextInt(AllSpells.allSpells.length);//gets a random num from 0 to the length of all the spells
+            spellName = AllSpells.allSpells[spellNumber].name;//gets the String from the random spell
+            AiWizard.getSpellBookObject().addToSpellBook(spellName);//adds that random spell to the ai wizard's spell book
+            daysLeftToLearnForAiWizard = daysLeftToLearnForAiWizard - AiWizard.getSpellBookObject().getSpellLearnTimeFromSpellBook(spellName); //handels the days left to learn for the Ai wizard
         }
     }
     //4________________________________________
@@ -139,19 +140,20 @@ public class GameLogic
         double healthPerRoundOnFaster = 0;
         double healthPerRoundOnSlower = 0;
         while(userWizard.health > 0 && AiWizard.health > 0){
-            userSpell = GameLogic.playerPicksSpell();
-            aiSpell = GameLogic.aiPicksSpell();
+            userSpell = GameLogic.playerPicksSpell();//has the player pick their spell
+            aiSpell = GameLogic.aiPicksSpell();//has the Ai pick its spell
             fasterSpell = GameLogic.compareSpellsSpeed(userWizard, userSpell, AiWizard, aiSpell);
-            slowerSpell = GameLogic.compareSlowerSpellsSpeed(userSpell, aiSpell);
+            slowerSpell = GameLogic.compareSlowerSpellsSpeed(userSpell, aiSpell);//need to have this function because compareSpellsSpeed function can't give 2 outputs.
+            //Ex: it can't print out two spells separately
             fasterSpellsDamage = GameLogic.caculateDamage(fasterSpell, slowerSpell);
             slowerSpellsDamage = GameLogic.caculateDamage(slowerSpell, fasterSpell);
             fasterSpellsAccuracy = GameLogic.caculateAccuracy(fasterSpell);
             slowerSpellsAccuracy = GameLogic.caculateAccuracy(slowerSpell);
             if(fasterSpellsAccuracy == true){
-                GameLogic.applyDamage(slowerWizard, fasterSpellsDamage);
-                GameLogic.applyHealth(fasterWizard, fasterSpell.health);
-                damagePerRoundOnSlower = damagePerRoundOnSlower + fasterSpell.damagePerRound;
-                healthPerRoundOnFaster = healthPerRoundOnFaster + fasterSpell.healthPerRound;
+                GameLogic.applyDamage(slowerWizard, fasterSpellsDamage);//does damage
+                GameLogic.applyHealth(fasterWizard, fasterSpell.health);//does health
+                damagePerRoundOnSlower = damagePerRoundOnSlower + fasterSpell.damagePerRound;//does damage per round
+                healthPerRoundOnFaster = healthPerRoundOnFaster + fasterSpell.healthPerRound;//does health per round
                 fasterWizard.getSpellBookObject().setTimesCanBeUsed(fasterSpell.getName());
                 JOptionPane.showMessageDialog(null, slowerWizard.name + " has taken " + String.valueOf(fasterSpellsDamage) + " damage" + "\n" +
                 userWizard.name + "'s health is: " + userWizard.health + "\n" +
@@ -161,10 +163,10 @@ public class GameLogic
                 fasterWizard.getSpellBookObject().setTimesCanBeUsed(fasterSpell.getName());
             }
             if(slowerSpellsAccuracy == true){
-                GameLogic.applyDamage(fasterWizard, slowerSpellsDamage);
-                GameLogic.applyHealth(slowerWizard, slowerSpell.health);
-                damagePerRoundOnFaster = damagePerRoundOnFaster + slowerSpell.damagePerRound;
-                healthPerRoundOnSlower = healthPerRoundOnSlower + slowerSpell.healthPerRound;
+                GameLogic.applyDamage(fasterWizard, slowerSpellsDamage);//does damage
+                GameLogic.applyHealth(slowerWizard, slowerSpell.health);//does health
+                damagePerRoundOnFaster = damagePerRoundOnFaster + slowerSpell.damagePerRound;//does damage per round
+                healthPerRoundOnSlower = healthPerRoundOnSlower + slowerSpell.healthPerRound;//does health per round
                 slowerWizard.getSpellBookObject().setTimesCanBeUsed(slowerSpell.getName());
                 JOptionPane.showMessageDialog(null, fasterWizard.name + " has taken " + String.valueOf(slowerSpellsDamage) + " damage" + "\n" +
                 userWizard.name + "'s health is: " + userWizard.health + "\n" +
@@ -185,7 +187,7 @@ public class GameLogic
             if(healthPerRoundOnSlower > 0){
                 JOptionPane.showMessageDialog(null, slowerWizard.name + " is healing for " + healthPerRoundOnSlower + " health per round.");
             }
-            GameLogic.applyDamage(fasterWizard, damagePerRoundOnFaster);
+            GameLogic.applyDamage(fasterWizard, damagePerRoundOnFaster);//applies the damage per round and the health per round
             GameLogic.applyDamage(slowerWizard, damagePerRoundOnSlower);
             GameLogic.applyHealth(fasterWizard, healthPerRoundOnFaster);
             GameLogic.applyHealth(slowerWizard, healthPerRoundOnSlower);
